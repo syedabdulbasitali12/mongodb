@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basit Air.sysborg</title>
+    <link rel="apple-touch-icon" href="pic/download.png">
+    <link rel="icon" href="pic/download.png">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<style>
+
+    body{
+        text-align: center;
+        font-size: 17px;
+        background-color: rgb(239, 99, 99);
+    }
+    * {
+        box-sizing: border-box
+    }
+    div.container1{
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    div.container2{
+        max-width: 1400px;
+        margin: auto;
+    }
+
+    .container2 {
+        background-color: #cccccc;
+        height: auto;
+        padding: 16px;
+        background-color: white;
+        border-radius: 50px;
+    }
+    h1{
+        text-decoration: underline;
+        background-color: rgb(255, 255, 255);
+        border-radius: 50px;
+        width: 1400px;
+    }
+    input[type=text] {
+        width: 20%;
+        display: inline-block;
+        background: #f1f1f1;
+        font-size: 15px;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border-radius: 25px;
+        height: 10px;
+        border-color: #f1f1f1;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    }
+
+    button {
+        text-align: center;
+        background-color:  rgb(239, 99, 99);
+        color: white;
+        padding: 16px 20px;
+        margin: 8px 0;
+        border-radius: 25px;
+        width: 10%;
+        opacity: 0.9;
+        height: 40px;
+        border-color: rgb(239, 99, 99);
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        cursor: pointer;
+    }
+    u{
+        text-decoration: underline;
+        -webkit-text-decoration-color:  rgb(239, 99, 99); 
+        text-decoration-color: rgb(239, 99, 99);
+
+    }
+</style>
+
+<body>
+    <div class="container1">
+        <i><h1><u>Todo App with Server</u></h1></i>
+    </div>
+
+    <div class="container2">
+        <form onsubmit="postTodo(); return false">
+            <b style="font-size: 22px;"><u>TODO:</u></b> <br><input id="todo" type="text" required><br>
+            <button type="submit">Add</button>
+        </form>
+        <button onclick="getAllTodos()">Refresh</button>
+        <button  onclick="getDelete(); return false">Delete All</button>
+        <h3 id="result"> </h3>
+        
+    </div>
+
+    <script>
+        
+        function postTodo() {
+            let todoText = document.querySelector("#todo").value
+
+            axios.post(`http:/localhost:3000/todo`, {
+                text: todoText
+            })
+                .then(function (response) {
+                    console.log(response.data);
+
+                    document.querySelector("#result").innerHTML = ""
+
+                    response.data.data.map(eachTodo => {
+                        document.querySelector("#result").innerHTML += eachTodo
+                        document.querySelector("#result").innerHTML += '<br>'
+                    })
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        }
+
+        function getAllTodos() {
+            axios.get(`http:/localhost:3000/todos`)
+                .then(function (response) {
+                    console.log(response.data);
+
+                    document.querySelector("#result").innerHTML = ""
+
+                    response.data.data.map(eachTodo => {
+                        document.querySelector("#result").innerHTML = eachTodo + document.querySelector("#result").innerHTML 
+                        document.querySelector("#result").innerHTML = '<br>' +  document.querySelector("#result").innerHTML
+                    })
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        
+            }
+        setInterval(getAllTodos, 700);
+
+        function getDelete() {
+                  
+         let code = prompt("Enter Password ")
+         if (code === "123") {
+            axios.delete('https://modern-galoshes-boa.cyclic.app/del')
+            .then(function (response) {
+                 console.log(response.data);
+         
+             })    
+             .catch((error) => {
+             console.log(error)
+         })}
+     
+     }
+
+        // function removelist() {
+        //     let code = prompt("Enter Password ")
+        //     if (code === "123") {
+        //         axios.delete(`${api}remove`)
+                
+        //     } else alert("Worng Password")
+        // }
+
+    </script>
+
+
+</body>
+
+</html>
