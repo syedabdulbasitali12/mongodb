@@ -99,18 +99,23 @@
         function postTodo() {
             let todoText = document.querySelector("#todo").value
 
-            axios.post(`http:/localhost:3000/todo`, {
+            axios.post(`http://localhost:3000/todo`, {
                 text: todoText
             })
                 .then(function (response) {
+
+                    document.querySelector("#current").innerHTML =
+                `         <h3 id="result"> </h3>`              
+                
+                
                     console.log(response.data);
 
-                    document.querySelector("#result").innerHTML = ""
+                    document.querySelector("#result").innerHTML = response.data.message;
 
-                    response.data.data.map(eachTodo => {
-                        document.querySelector("#result").innerHTML += eachTodo
-                        document.querySelector("#result").innerHTML += '<br>'
-                    })
+                    // response.data.data.map(eachTodo => {
+                    //     document.querySelector("#result").innerHTML += eachTodo
+                    //     document.querySelector("#result").innerHTML += '<br>'
+                    // })
 
                 })
                 .catch(function (error) {
@@ -120,39 +125,41 @@
         }
 
         function getAllTodos() {
-            axios.get(`http:/localhost:3000/todos`)
+            axios.get(`http://localhost:3000/todos`)
                 .then(function (response) {
                     console.log(response.data);
 
                     document.querySelector("#result").innerHTML = ""
 
                     response.data.data.map(eachTodo => {
-                        document.querySelector("#result").innerHTML = eachTodo + document.querySelector("#result").innerHTML 
-                        document.querySelector("#result").innerHTML = '<br>' +  document.querySelector("#result").innerHTML
+                        document.querySelector("#result").innerHTML = eachTodo.text +  document.querySelector("#result").innerHTML
+                        document.querySelector("#result").innerHTML = '<br>' + document.querySelector("#result").innerHTML 
                     })
 
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
+        }
         
-            }
+
         setInterval(getAllTodos, 700);
 
         function getDelete() {
-                  
-         let code = prompt("Enter Password ")
-         if (code === "123") {
-            axios.delete('https://modern-galoshes-boa.cyclic.app/del')
-            .then(function (response) {
-                 console.log(response.data);
          
-             })    
-             .catch((error) => {
-             console.log(error)
-         })}
-     
-     }
+                    
+            let code = prompt("Enter Password ")
+            if (code === "123") {
+                axios.delete('http://localhost:3000/del')
+            .then(function (response) {
+                    console.log(response.data);
+            
+                })    
+                .catch((error) => {
+                console.log(error)
+            })}
+        
+        }
 
         // function removelist() {
         //     let code = prompt("Enter Password ")

@@ -1,84 +1,84 @@
 import express from 'express';
 import cors from 'cors';
-import mongoose from 'mongoose'; 
+import mongoose from 'mongoose';
 
-let todoschema = new mongoose.Schema({
-    text: {type: String, required: true},
-    classid: String,
-    createdon:{ type: Date, default: Date.now}
-})
-const todoModel = mongoose
+
+
+let todoSchema = new mongoose.Schema({
+    text: { type: String, required: true },
+    classId: String,
+    createdOn: { type: Date, default: Date.now }
+});
+const todoModel = mongoose.model('todos', todoSchema);
+
+
+
 const app = express()
 const port = process.env.PORT || 3000;
 
-let todos = [];
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.post('/todo', (req, res) => {
-    
-    todos.push(req.body.text);
 
-    todosModel.create({text:req.body.text},(err, saved) =>{
-        if(!err) {
+    todoModel.create({ text: req.body.text }, (err, saved) => {
+        if (!err) {
             console.log(saved);
+
             res.send({
-            message: "your todo is saved",
-            data:todos
+                message: "your todo is saved"
             })
         } else {
             res.status(500).send({
-                message: "server error",
+                message: "server error"
             })
         }
-    }
-    })
-
-    res.send({
-        message: "your todo is saved",
-        data: todos
     })
 })
 app.get('/todos', (req, res) => {
-    
-    res.send({
-        message: "here is you todo list",
-        data: todos
-    })
-})
-app.delete('/del', (req, res) => {
-    todos=[]
-    res.send({
-        message: "todo is deleted",
-        data: todos
-    })
-})
 
-// POST 172.16.18.202:3000/water
-
-// 172.16.18.202:5500
+    todoModel.find({}, (err, data) => {
+        if (!err) {
+            res.send({
+                message: "here is you todo list",
+                data: data
+            })
+        }else{
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
+})
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Server app is listening on port ${port}`)
 })
-var dbURI = "mongodb+srv://basitalu83:*basitali12*@cluster0.zfqei07.mongodb.net/?retryWrites=true&w=majority";
-// let dbURI = 'mongodb://localhost/mydatabase';
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+let dbURI = 'mongodb+srv://basitali12:*basitali12*@cluster0.pd5liif.mongodb.net/abcdatabase?retryWrites=true&w=majority';
 mongoose.connect(dbURI);
+
+
 ////////////////mongodb connected disconnected events///////////////////////////////////////////////
-mongoose.connection.on('connected', function () {
+mongoose.connection.on('connected', function () {//connected
     console.log("Mongoose is connected");
     // process.exit(1);
 });
-mongoose.connection.on('disconnected', function () {
+
+mongoose.connection.on('disconnected', function () {//disconnected
     console.log("Mongoose is disconnected");
     process.exit(1);
 });
-mongoose.connection.on('error', function (err) {
+
+mongoose.connection.on('error', function (err) {//any error
     console.log('Mongoose connection error: ', err);
     process.exit(1);
 });
-process.on('SIGINT', function () {
+
+process.on('SIGINT', function () {/////this function will run jst before app is closing
     console.log("app is terminating");
     mongoose.connection.close(function () {
         console.log('Mongoose default connection closed');
