@@ -89,7 +89,7 @@
             <button type="submit">Add</button>
         </form>
         <button onclick="getAllTodos()">Refresh</button>
-        <button  onclick="getDelete(); return false">Delete All</button>
+        <!-- <button  onclick="getDelete(); return false">Delete All</button> -->
         <h3 id="result"> </h3>
         
     </div>
@@ -99,7 +99,7 @@
         function postTodo() {
             let todoText = document.querySelector("#todo").value
 
-            axios.post(`http://localhost:3000/todo`, {
+            axios.post(`https://comfortable-rose-crow.cyclic.app/todo`, {
                 text: todoText
             })
                 .then(function (response) {
@@ -125,7 +125,7 @@
         }
 
         function getAllTodos() {
-            axios.get(`http://localhost:3000/todos`)
+            axios.get(`https://comfortable-rose-crow.cyclic.app/todos`)
                 .then(function (response) {
                     console.log(response.data);
 
@@ -145,21 +145,21 @@
 
         setInterval(getAllTodos, 700);
 
-        function getDelete() {
+        // function getDelete() {
          
                     
-            let code = prompt("Enter Password ")
-            if (code === "123") {
-                axios.delete('http://localhost:3000/del')
-            .then(function (response) {
-                    console.log(response.data);
+        //     let code = prompt("Enter Password ")
+        //     if (code === "123") {
+        //         axios.delete('http://localhost:3000/del')
+        //     .then(function (response) {
+        //             console.log(response.data);
             
-                })    
-                .catch((error) => {
-                console.log(error)
-            })}
+        //         })    
+        //         .catch((error) => {
+        //         console.log(error)
+        //     })}
         
-        }
+        // }
 
         // function removelist() {
         //     let code = prompt("Enter Password ")
