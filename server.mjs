@@ -27,7 +27,7 @@ app.post('/todo', (req, res) => {
             console.log(saved);
 
             res.send({
-                message: "your todo is saved"
+                message: "Todo saved"
             })
         } else {
             res.status(500).send({
@@ -41,7 +41,7 @@ app.get('/todos', (req, res) => {
     todoModel.find({}, (err, data) => {
         if (!err) {
             res.send({
-                message: "here is you todo list",
+                message: "Todo list",
                 data: data
             })
         }else{
@@ -51,6 +51,22 @@ app.get('/todos', (req, res) => {
         }
     });
 })
+app.delete('/dele', (req, res) => {
+    
+    todoModel.deleteMany({}, (err, data) => {
+        if (!err) {
+            res.send({
+                message: "Todo deleted",
+                data: data
+            })
+        }else{
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
+})
+
 
 app.listen(port, () => {
     console.log(`Server app is listening on port ${port}`)
