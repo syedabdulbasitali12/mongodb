@@ -242,7 +242,7 @@ h3{
         function postTodo() {
             let todoText = document.querySelector("#todo").value
 
-            axios.post(`http://localhost:3000/todo`, {
+            axios.post(`https://ivory-ladybug-cape.cyclic.app/todo`, {
                 text: todoText
             })
                 .then(function (response) {
@@ -267,7 +267,7 @@ h3{
         }
 
         function getAllTodos() {
-            axios.get(`http://localhost:3000/todos`)
+            axios.get(`https://ivory-ladybug-cape.cyclic.app/todos`)
                 .then(function (response) {
                     console.log(response.data);
 
@@ -292,7 +292,7 @@ h3{
                     
          let code = prompt("Enter Password:")
          if (code === "123") {
-             axios.delete('http://localhost:3000/dele')
+             axios.delete('https://ivory-ladybug-cape.cyclic.app/dele')
          .then(function (response) {
                  console.log(response.data);
              })    
