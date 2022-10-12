@@ -202,7 +202,6 @@ h3{
     color:  #45f3ff;
 }
 #result{
-	
         border: 2px #28292d;
         border-radius: 5px;
       background-color: #28292d;
@@ -213,9 +212,6 @@ h3{
         margin-left: 250px;
         width: 780px;
     }
-
-		
-
 </style>
 
 <body>
@@ -234,6 +230,7 @@ h3{
         </form>
     </div><br><br>
     <div class="box1">
+		<h5 id="message"></h5>
 		<ul><h3 id="result"> </h3></ul>
 		
     </div>
@@ -242,17 +239,20 @@ h3{
         function postTodo() {
             let todoText = document.querySelector("#todo").value
 
-            axios.post(`https://ivory-ladybug-cape.cyclic.app/todo`, {
+			// for fake showing todo before post
+			document.querySelector("#result").innerHTML = todoText +  document.querySelector("#result").innerHTML 
+            document.querySelector("#result").innerHTML = '<br>' + document.querySelector("#result").innerHTML
+            //
+			axios.post(`http://localhost:3000/todo`, {
                 text: todoText
             })
                 .then(function (response) {
+					console.log(response.data);
 
-                    document.querySelector("#current").innerHTML =
-                `      <h3 id="result"> </h3>`              
-                
-                    console.log(response.data);
+					getAllTodos();
 
-                    document.querySelector("#result").innerHTML = response.data.message;
+
+                    // document.querySelector("#message").innerHTML = response.data.message; //for showing todo is saved message at screen
 
                     // response.data.data.map(eachTodo => {
                     //     document.querySelector("#result").innerHTML += eachTodo
@@ -265,9 +265,8 @@ h3{
                 })
 
         }
-
         function getAllTodos() {
-            axios.get(`https://ivory-ladybug-cape.cyclic.app/todos`)
+            axios.get(`http://localhost:3000/todos`)
                 .then(function (response) {
                     console.log(response.data);
 
@@ -283,16 +282,13 @@ h3{
                     console.log(error);
                 })
         }
-        
+		getAllTodos();
+        setInterval(getAllTodos, 700); // use socket ios instead of set interval
 
-        setInterval(getAllTodos, 700);
-
-        function getDelete() {
-         
-                    
+        function getDelete() { 
          let code = prompt("Enter Password:")
          if (code === "123") {
-             axios.delete('https://ivory-ladybug-cape.cyclic.app/dele')
+             axios.delete('http://localhost:3000/todos')
          .then(function (response) {
                  console.log(response.data);
              })    
@@ -302,9 +298,7 @@ h3{
 		else{
 			alert("Wrong password!")
 		}}
-
     </script>
-
     </center>
 </body>
 </html>

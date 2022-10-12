@@ -51,12 +51,12 @@ app.get('/todos', (req, res) => {
         }
     });
 })
-app.delete('/dele', (req, res) => {
+app.delete('/todos', (req, res) => {
     
     todoModel.deleteMany({}, (err, data) => {
         if (!err) {
             res.send({
-                message: "Todo deleted",
+                message: "All Todo is deleted",
                 data: data
             })
         }else{
@@ -67,6 +67,30 @@ app.delete('/dele', (req, res) => {
     });
 })
 
+app.delete('/todo/:id', (req, res) => {
+    
+    todoModel.deleteOne({ _id: req.params.id }, (err, deletedData) => {
+        console.log("deleted: ", deletedData);
+        if (!err) {
+
+            if (deletedData.deletedCount !== 0) {
+                res.send({
+                    message: "Todo has been deleted successfully",
+                })
+            } else {
+                res.send({
+                    message: "No todo found with this id: " + req.params.id,
+                })
+            }
+
+
+        } else {
+            res.status(500).send({
+                message: "server error"
+            })
+        }
+    });
+})
 
 app.listen(port, () => {
     console.log(`Server app is listening on port ${port}`)
